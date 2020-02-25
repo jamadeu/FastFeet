@@ -2,18 +2,9 @@ import { Op } from 'sequelize';
 import * as Yup from 'yup';
 
 import Recipient from '../models/Recipient';
-import User from '../models/User';
 
 class RecipientController {
   async store(req, res) {
-    const { admin } = await User.findByPk(req.userId);
-
-    if (!admin) {
-      return res
-        .status(401)
-        .json({ error: 'Only admin can create recipients' });
-    }
-
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       street: Yup.string().required(),
