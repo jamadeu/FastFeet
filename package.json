@@ -9,10 +9,11 @@
     "dev:debug": "nodemon --inspect src/server.js"
   },
   "dependencies": {
-    "eslint-plugin-import-helpers": "^1.0.2",
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "mysql2": "^2.1.0",
-    "sequelize": "^5.21.5"
+    "sequelize": "^5.21.5",
+    "yup": "^0.28.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

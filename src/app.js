@@ -1,6 +1,7 @@
 import express from 'express';
 
 import routes from './routes';
+import './database';
 
 class App {
   constructor() {
@@ -15,7 +16,7 @@ class App {
   }
 
   routes() {
-    this.server.unsubscribe(routes);
+    this.server.use(routes);
   }
 }
 
