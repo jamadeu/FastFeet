@@ -13,9 +13,9 @@ routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware);
 
-routes.use(adminMiddleware);
-
 routes.put('/users', UserController.update);
+
+routes.use(adminMiddleware);
 
 routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
