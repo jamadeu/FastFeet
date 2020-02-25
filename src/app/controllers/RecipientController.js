@@ -51,6 +51,52 @@ class RecipientController {
       zip_code,
     });
   }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      street: Yup.string(),
+      number: Yup.number(),
+      complement: Yup.string(),
+      state: Yup.string(),
+      city: Yup.string(),
+      zip_code: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(401).json({ error: 'Validation fails' });
+    }
+
+    const { name, zip_code } = req.body;
+
+    const recipientExists = await Recipient.findOne({
+      where: { [Op.and]: [{ name }, { zip_code }] },
+    });
+
+    if (recipientExists && recipientExists.id !== req.params.id) {
+      return res.status(401).json({ error: 'Recipient already exists' });
+    }
+
+    const recipient = await Recipient.findByPk(req.params.id);
+
+    if (!recipient) {
+      return res.status(401).json({ error: 'Recipient not found' });
+    }
+
+    const { street, number, complement, state, city } = await recipient.update(
+      req.body
+    );
+
+    return res.json({
+      name,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      zip_code,
+    });
+  }
 }
 
 export default new RecipientController();
