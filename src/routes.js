@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import DeliveryManController from './app/controllers/DeliveryManController';
 import FileController from './app/controllers/FileController';
 import RecipientController from './app/controllers/RecipientController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
-import adminMiddleware from './app/middlewares/admin';
 import authMiddleware from './app/middlewares/auth';
 import multerConfig from './config/multer';
 
@@ -19,11 +19,11 @@ routes.use(authMiddleware);
 
 routes.put('/users', UserController.update);
 
-routes.use(adminMiddleware);
-
 routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
+
+routes.post('/deliverymans', DeliveryManController.store);
 
 export default routes;
