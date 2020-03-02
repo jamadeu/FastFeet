@@ -5,3 +5,5 @@ class NotificationController {
     return res.json();
   }
 }
+
+export default new NotificationController();

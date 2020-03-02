@@ -3,6 +3,7 @@ import multer from 'multer';
 
 import DeliveryManController from './app/controllers/DeliveryManController';
 import FileController from './app/controllers/FileController';
+import OrderController from './app/controllers/OrderController';
 import RecipientController from './app/controllers/RecipientController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
@@ -28,5 +29,7 @@ routes.post('/deliverymans', DeliveryManController.store);
 routes.get('/deliverymans', DeliveryManController.index);
 routes.put('/deliverymans/:id', DeliveryManController.update);
 routes.delete('/deliverymans/:id', DeliveryManController.delete);
+
+routes.post('/orders', OrderController.store);
 
 export default routes;
