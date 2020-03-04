@@ -9,10 +9,11 @@ class OrderingMail {
     const { order } = data;
 
     await Mail.sendMail({
-      to: `${order.deliveryman.name}<${order.deliveryman.email}>`,
+      to: `${order.deliveryman.name} <${order.deliveryman.email}>`,
       subject: 'Novo pacote',
       template: 'ordering',
       context: {
+        deliveryman: order.deliveryman.name,
         name: order.recipient.name,
         street: order.recipient.street,
         number: order.recipient.number,
