@@ -76,6 +76,27 @@ class OrderController {
 
     return res.json(order);
   }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      id: Yup.number().required(),
+      recipient_id: Yup.number(),
+      deliveryman_id: Yup.number(),
+      start_date: Yup.date(),
+      end_date: Yup.date(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fail' });
+    }
+
+    /**
+     * Se informado validar se o recipient e/ou deliveryman existem
+     * caso informado start_date deve estar entre as 8 e as 18 do fia
+     * end_date nao deve ser a mesma data do start
+     */
+    return res.json();
+  }
 }
 
 export default new OrderController();
