@@ -9,6 +9,45 @@ import Recipient from '../models/Recipient';
 import Notification from '../schemas/Notification';
 
 class OrderController {
+  async index(req, res) {
+    const orders = await Order.findAll({
+      where: {
+        canceled_at: null,
+      },
+      attributes: [
+        'id',
+        'product',
+        'canceled_at',
+        'start_date',
+        'end_date',
+        'signature_id',
+      ],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'city',
+            'state',
+            'zip_code',
+          ],
+        },
+        {
+          model: DeliveryMan,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
+      ],
+    });
+
+    return res.json(orders);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       recipient_id: Yup.number().required(),
