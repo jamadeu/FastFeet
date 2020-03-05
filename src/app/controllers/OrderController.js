@@ -146,6 +146,28 @@ class OrderController {
 
     return res.json(order);
   }
+
+  async delete(req, res) {
+    const order = await Order.findByPk(req.params.id);
+
+    if (!order) {
+      return res.status(400).json({ error: 'Order not found' });
+    }
+
+    if (order.canceled_at) {
+      return res.status(400).json({ error: 'Order already canceled' });
+    }
+
+    if (order.end_date) {
+      return res
+        .status(400)
+        .json({ error: 'Order has already been delivered' });
+    }
+
+    await order.update({ canceled_at: new Date() });
+
+    return res.json(order);
+  }
 }
 
 export default new OrderController();
