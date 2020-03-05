@@ -1,3 +1,10 @@
+import {
+  setSeconds,
+  setMinutes,
+  setHours,
+  isWithinInterval,
+  format,
+} from 'date-fns';
 import * as Yup from 'yup';
 
 import Queue from '../../lib/Queue';
@@ -79,10 +86,8 @@ class OrderController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      id: Yup.number().required(),
       recipient_id: Yup.number(),
       deliveryman_id: Yup.number(),
-      start_date: Yup.date(),
       end_date: Yup.date(),
     });
 
@@ -90,12 +95,54 @@ class OrderController {
       return res.status(400).json({ error: 'Validation fail' });
     }
 
-    /**
-     * Se informado validar se o recipient e/ou deliveryman existem
-     * caso informado start_date deve estar entre as 8 e as 18 do fia
-     * end_date nao deve ser a mesma data do start
-     */
-    return res.json();
+    const order = await Order.findByPk(req.params.id);
+
+    if (!order) {
+      return res.status(400).json({ error: 'Order not found' });
+    }
+
+    const { recipient_id, deliveryman_id } = req.body;
+
+    if (recipient_id) {
+      const recipientExists = await Recipient.findByPk(recipient_id);
+
+      if (!recipientExists) {
+        return res.status(400).json({ error: 'Ricipient not found' });
+      }
+    }
+
+    if (deliveryman_id) {
+      const deliveryManExists = await DeliveryMan.findByPk(deliveryman_id);
+
+      if (!deliveryManExists) {
+        return res.status(400).json({ error: 'Ricipient not found' });
+      }
+    }
+
+    const start_date = Number(req.query.date);
+
+    if (start_date) {
+      const startTime = setSeconds(
+        setMinutes(setHours(start_date, '08'), '00'),
+        '00'
+      );
+      const endTime = setSeconds(
+        setMinutes(setHours(start_date, '18'), '00'),
+        '00'
+      );
+
+      if (!isWithinInterval(start_date, { start: startTime, end: endTime })) {
+        return res.status(401).json({
+          error: 'Withdrawals can only be made between 08:00h and 18:00h.',
+        });
+      }
+
+      await order.update(format(start_date, "yyyy-MM-dd'T'HH:mm:ssxxx"));
+    }
+
+    await order.update(req.body);
+
+    return res.json(order);
   }
 }
 
