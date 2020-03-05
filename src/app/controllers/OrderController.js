@@ -1,10 +1,4 @@
-import {
-  setSeconds,
-  setMinutes,
-  setHours,
-  isWithinInterval,
-  format,
-} from 'date-fns';
+import { setSeconds, setMinutes, setHours, isWithinInterval } from 'date-fns';
 import * as Yup from 'yup';
 
 import Queue from '../../lib/Queue';
@@ -101,6 +95,10 @@ class OrderController {
       return res.status(400).json({ error: 'Order not found' });
     }
 
+    if (order.canceled_at) {
+      return res.status(400).json({ error: 'Order canceled' });
+    }
+
     const { recipient_id, deliveryman_id } = req.body;
 
     if (recipient_id) {
@@ -122,6 +120,10 @@ class OrderController {
     const start_date = Number(req.query.date);
 
     if (start_date) {
+      if (order.start_date) {
+        return res.status(400).json({ error: 'Order already withdraw' });
+      }
+
       const startTime = setSeconds(
         setMinutes(setHours(start_date, '08'), '00'),
         '00'
@@ -137,7 +139,7 @@ class OrderController {
         });
       }
 
-      await order.update(format(start_date, "yyyy-MM-dd'T'HH:mm:ssxxx"));
+      await order.update({ start_date });
     }
 
     await order.update(req.body);
