@@ -156,7 +156,8 @@ class OrderController {
       }
     }
 
-    const start_date = Number(req.query.date);
+    const start_date = Number(req.query.startDate);
+    const end_date = Number(req.query.endDate);
 
     if (start_date) {
       if (order.start_date) {
@@ -179,6 +180,22 @@ class OrderController {
       }
 
       await order.update({ start_date });
+    }
+
+    if (end_date) {
+      if (order.end_date) {
+        return res
+          .status(400)
+          .json({ error: 'Order has already been delivered' });
+      }
+
+      if (!order.start_date) {
+        return res
+          .status(400)
+          .json({ error: 'Order has not yet been collected' });
+      }
+
+      await order.update({ end_date });
     }
 
     await order.update(req.body);
