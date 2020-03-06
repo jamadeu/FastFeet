@@ -22,6 +22,7 @@ routes.get('/notifications/:deliverymanId', NotificationController.index);
 routes.put('/notifications/:deliverymanId', NotificationController.update);
 
 routes.get('/deliveryman/:deliverymanId/deliveries', DeliveryController.index);
+routes.put('/deliveryman/:deliverymanId/deliveries', DeliveryController.update);
 
 routes.use(authMiddleware);
 

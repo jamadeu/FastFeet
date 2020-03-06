@@ -77,6 +77,10 @@ class DeliveryController {
 
     return res.json(orders);
   }
+
+  async update(req, res) {
+    return res.json();
+  }
 }
 
 export default new DeliveryController();
