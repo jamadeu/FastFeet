@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import DeliveryController from './app/controllers/DeliveryController';
 import DeliveryManController from './app/controllers/DeliveryManController';
 import FileController from './app/controllers/FileController';
 import NotificationController from './app/controllers/NotificationController';
@@ -17,8 +18,10 @@ const upload = multer(multerConfig);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
-routes.get('/notifications/:deliveryman_id', NotificationController.index);
-routes.put('/notifications/:deliveryman_id', NotificationController.update);
+routes.get('/notifications/:deliverymanId', NotificationController.index);
+routes.put('/notifications/:deliverymanId', NotificationController.update);
+
+routes.get('/deliveryman/:deliverymanId/deliveries', DeliveryController.index);
 
 routes.use(authMiddleware);
 

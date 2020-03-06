@@ -4,7 +4,7 @@ import Notification from '../schemas/Notification';
 class NotificationController {
   async index(req, res) {
     const deliveryManExists = await DeliveryMan.findByPk(
-      req.params.deliveryman_id
+      req.params.deliverymanId
     );
 
     if (!deliveryManExists) {
@@ -12,7 +12,7 @@ class NotificationController {
     }
 
     const notifications = await Notification.find({
-      deliveryman_id: req.params.deliveryman_id,
+      deliveryman_id: req.params.deliverymanId,
     })
       .sort({ createdAt: 'desc' })
       .limit(20);
@@ -22,7 +22,7 @@ class NotificationController {
 
   async update(req, res) {
     const deliveryManExists = await DeliveryMan.findByPk(
-      req.params.deliveryman_id
+      req.params.deliverymanId
     );
 
     if (!deliveryManExists) {

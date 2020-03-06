@@ -10,6 +10,8 @@ import Notification from '../schemas/Notification';
 
 class OrderController {
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const orders = await Order.findAll({
       where: {
         canceled_at: null,
@@ -22,6 +24,8 @@ class OrderController {
         'end_date',
         'signature_id',
       ],
+      limit: 20,
+      offset: (page - 1) * 20,
       include: [
         {
           model: Recipient,
