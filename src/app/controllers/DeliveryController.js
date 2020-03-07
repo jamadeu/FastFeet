@@ -91,6 +91,9 @@ class DeliveryController {
       orderId: Yup.number().required(),
       startDate: Yup.date(),
       endDate: Yup.date(),
+      signature_id: Yup.number().when('endDate', (endDate, field) =>
+        endDate ? field.required() : field
+      ),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -182,7 +185,7 @@ class DeliveryController {
           .json({ error: 'Order has not yet been collected' });
       }
 
-      await order.update({ end_date });
+      await order.update({ end_date, signature_id: req.body.signature_id });
       return res.json(order);
     }
 
