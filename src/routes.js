@@ -25,7 +25,7 @@ routes.put('/notifications/:deliverymanId', NotificationController.update);
 routes.get('/deliveryman/:deliverymanId/deliveries', DeliveryController.index);
 routes.put('/deliveryman/:deliverymanId/deliveries', DeliveryController.update);
 
-routes.post('/delivery/:deliverId/problem', DeliveryProblemController.store);
+routes.post('/delivery/:deliveryId/problems', DeliveryProblemController.store);
 
 routes.use(authMiddleware);
 
@@ -45,5 +45,11 @@ routes.get('/orders', OrderController.index);
 routes.post('/orders', OrderController.store);
 routes.put('/orders/:id', OrderController.update);
 routes.delete('/orders/:id', OrderController.delete);
+
+routes.get('/delivery/:deliveryId/problems', DeliveryProblemController.index);
+routes.delete(
+  '/problems/:problemId/cancel-delivery',
+  DeliveryProblemController.delete
+);
 
 export default routes;
