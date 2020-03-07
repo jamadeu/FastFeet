@@ -3,6 +3,7 @@ import multer from 'multer';
 
 import DeliveryController from './app/controllers/DeliveryController';
 import DeliveryManController from './app/controllers/DeliveryManController';
+import DeliveryProblemController from './app/controllers/DeliveryProblemController';
 import FileController from './app/controllers/FileController';
 import NotificationController from './app/controllers/NotificationController';
 import OrderController from './app/controllers/OrderController';
@@ -23,6 +24,8 @@ routes.put('/notifications/:deliverymanId', NotificationController.update);
 
 routes.get('/deliveryman/:deliverymanId/deliveries', DeliveryController.index);
 routes.put('/deliveryman/:deliverymanId/deliveries', DeliveryController.update);
+
+routes.post('/delivery/:deliverId/problem', DeliveryProblemController.store);
 
 routes.use(authMiddleware);
 
